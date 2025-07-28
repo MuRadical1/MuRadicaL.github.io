@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MuRadicaL</title>
+
+<!-- LemonMilk font CDN -->
+<link href="https://cdn.jsdelivr.net/gh/saeedalipoor/lemonmilk@1.0.3/lemonmilk.min.css" rel="stylesheet" />
+
+<style>
+  body {
+    margin: 0; padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'LemonMilk', sans-serif;
+    color: #00fff7;
+    overflow: hidden;
+  }
+  #playBtn {
+    font-size: 1.5rem;
+    padding: 1rem 2.5rem;
+    border: 2px solid #00fff7;
+    color: #00fff7;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 2rem;
+    letter-spacing: 1.2px;
+  }
+  #playBtn:hover {
+    background-color: #00fff7;
+    color: #0f0c29;
+  }
+  #textDisplay {
+    font-size: 2rem;
+    min-height: 3.5rem;
+    white-space: nowrap;
+    border-right: 3px solid #00fff7;
+    overflow: hidden;
+    max-width: 90vw;
+    text-align: center;
+    letter-spacing: 1.5px;
+  }
+  .contact {
+    margin-top: 3rem;
+    display: flex;
+    gap: 2rem;
+  }
+  .contact a {
+    padding: 0.8rem 2rem;
+    border: 2px solid #00fff7;
+    color: #00fff7;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    letter-spacing: 1px;
+  }
+  .contact a:hover {
+    background-color: #00fff7;
+    color: #0f0c29;
+  }
+</style>
+</head>
+<body>
+
+<button id="playBtn">Play Music & Start</button>
+<div id="textDisplay"></div>
+<div class="contact" style="display:none;">
+  <a href="mailto:muradfndi716@gmail.com" target="_blank" rel="noopener noreferrer">Email</a>
+  <a href="https://instagram.com/m.efendi.09" target="_blank" rel="noopener noreferrer">Instagram</a>
+  <a href="https://codeforces.com/profile/MuRadicaL" target="_blank" rel="noopener noreferrer">Codeforces</a>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="C:\Users\ELZA\Downloads\fon.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+  const playBtn = document.getElementById('playBtn');
+  const textDisplay = document.getElementById('textDisplay');
+  const audio = document.getElementById('bgMusic');
+  const contact = document.querySelector('.contact');
+
+  const texts = [
+    "Hi there",
+    "I'm Murad",
+    "My nick is MuRadicaL",
+    "I'm learning programming",
+    "And i'm trying to improve myself in cyber security",
+    "I'm currently dealing with c++ heavily",
+    "Therefore, my college goals including top universities of Azerbaijan",
+    "If you wanna contact me you can mail me",
+    "Take care!"
+  ];
+
+  let textIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  function typeWriter() {
+    if (!deleting) {
+      if (charIndex < texts[textIndex].length) {
+        textDisplay.textContent += texts[textIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, 100);
+      } else {
+        // Pause at full text
+        setTimeout(() => { deleting = true; typeWriter(); }, 2000);
+      }
+    } else {
+      if (charIndex > 0) {
+        textDisplay.textContent = texts[textIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(typeWriter, 50);
+      } else {
+        deleting = false;
+        textIndex++;
+        if (textIndex >= texts.length) {
+          // Bütün yazılar bitdi
+          audio.pause();
+          playBtn.style.display = 'inline-block';
+          contact.style.display = 'flex';
+          textDisplay.textContent = "";
+          textIndex = 0;
+          return;
+        }
+        setTimeout(typeWriter, 500);
+      }
+    }
+  }
+
+  function startAnimation() {
+    playBtn.style.display = 'none';
+    contact.style.display = 'flex';
+    audio.currentTime = 0;
+    audio.play();
+    typeWriter();
+  }
+
+  playBtn.addEventListener('click', () => {
+    startAnimation();
+  });
+</script>
+
+</body>
+</html>
